@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: multi-tenant-app
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    open-in-view: false
+  flyway:
+    enabled: false
+  h2:
+    console:
+      enabled: true
+      path: /h2
+
+server:
+  port: 8080
+logging:
+  level:
+    root: warn
+    io.devzonecodez: trace
+
+tenants:
+  datasources:
+    tenantone:
+      jdbcUrl: jdbc:h2:mem:tenantone
+      driverClassName: org.h2.Driver
+      username: tenantone
+      password: tenantone
+    tenanttwo:
+      jdbcUrl: jdbc:h2:mem:tenanttwo
+      driverClassName: org.h2.Driver
+      username: tenanttwo
+      password: tenanttwo
