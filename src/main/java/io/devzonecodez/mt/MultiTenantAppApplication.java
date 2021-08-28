@@ -31,16 +31,15 @@ public class MultiTenantAppApplication implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		TenantContextHolder.setTenantId("tenantone");
+		// create default user for both the tenants ob startup
 		createDefaultUsers(5, "tenantone");
-		TenantContextHolder.clear();
-
-		TenantContextHolder.setTenantId("tenanttwo");
 		createDefaultUsers(5, "tenanttwo");
-		TenantContextHolder.clear();
 	}
 
 	private void createDefaultUsers(int numberOfUsers, String tenant) {
+		// set the tenant
+		TenantContextHolder.setTenantId(tenant);
+
 		List<User> users = new ArrayList<>(5);
 		User user;
 		for (int i = 0; i < numberOfUsers; i++) {
@@ -51,5 +50,8 @@ public class MultiTenantAppApplication implements ApplicationRunner {
 			users.add(user);
 		}
 		userRepo.saveAll(users);
+
+		// clear the tenant
+		TenantContextHolder.clear();
 	}
 }
