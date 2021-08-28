@@ -15,7 +15,7 @@ server:
   port: 8080
 logging:
   level:
-    root: warn
+    root: info
     io.devzonecodez: trace
 
 tenants:

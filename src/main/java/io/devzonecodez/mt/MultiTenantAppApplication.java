@@ -1,8 +1,11 @@
 package io.devzonecodez.mt;
 
 import io.devzonecodez.mt.config.web.TenantContextHolder;
+import io.devzonecodez.mt.model.Scheduler;
 import io.devzonecodez.mt.model.User;
 import io.devzonecodez.mt.repo.UserRepo;
+import io.devzonecodez.mt.service.SchedulerService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -20,10 +23,14 @@ import java.util.List;
 @ComponentScan(basePackages = {"io.devzonecodez.mt"})
 @EntityScan(basePackages = {"io.devzonecodez.mt.model"})
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
+@Slf4j
 public class MultiTenantAppApplication implements ApplicationRunner {
 
 	@Autowired
 	private UserRepo userRepo;
+
+	@Autowired
+    private SchedulerService schedulerService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MultiTenantAppApplication.class, args);
@@ -34,6 +41,14 @@ public class MultiTenantAppApplication implements ApplicationRunner {
 		// create default user for both the tenants ob startup
 		createDefaultUsers(5, "tenantone");
 		createDefaultUsers(5, "tenanttwo");
+
+		// load schedulers
+		// set the tenant
+		TenantContextHolder.setTenantId("tenanttwo");
+		List<Scheduler> schedulers = schedulerService.findAllActiveSchedulers();
+        log.info("schedulers ----> ", schedulers);
+		// clear the tenant
+		TenantContextHolder.clear();
 	}
 
 	private void createDefaultUsers(int numberOfUsers, String tenant) {
