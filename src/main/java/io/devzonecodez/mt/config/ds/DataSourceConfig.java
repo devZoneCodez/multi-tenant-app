@@ -20,8 +20,10 @@ public class DataSourceConfig {
     public DataSource dataSource() {
         TenantDataSource customDataSource = new TenantDataSource();
         customDataSource.setTargetDataSources(dataSourceProps.getDataSources());
-        // TODO the default datasource to be set - Hence, set one of the teanant
-        // TODO as default tenant
+        /*
+            TODO: the default datasource to be set - Hence, set one of the teanant
+             as default tenant
+         */
         TenantContextHolder.setTenantId("tenantone");
         customDataSource.afterPropertiesSet();
 

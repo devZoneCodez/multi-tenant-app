@@ -43,12 +43,8 @@ public class MultiTenantAppApplication implements ApplicationRunner {
 		createDefaultUsers(5, "tenanttwo");
 
 		// load schedulers
-		// set the tenant
-		TenantContextHolder.setTenantId("tenanttwo");
-		List<Scheduler> schedulers = schedulerService.findAllActiveSchedulers();
-        log.info("schedulers ----> ", schedulers);
-		// clear the tenant
-		TenantContextHolder.clear();
+		loadSchedulers("tenantone");
+		loadSchedulers("tenanttwo");
 	}
 
 	private void createDefaultUsers(int numberOfUsers, String tenant) {
@@ -67,6 +63,13 @@ public class MultiTenantAppApplication implements ApplicationRunner {
 		userRepo.saveAll(users);
 
 		// clear the tenant
+		TenantContextHolder.clear();
+	}
+
+	private void loadSchedulers(String tenant) {
+		TenantContextHolder.setTenantId(tenant);
+		List<Scheduler> t1Schedulers = schedulerService.findAllActiveSchedulers();
+		log.info("schedulers ---->  " + tenant +" = " + t1Schedulers);
 		TenantContextHolder.clear();
 	}
 }

@@ -4,8 +4,11 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     open-in-view: false
+    hibernate:
+      ddl-auto: none
   flyway:
     enabled: false
+    baseline-on-migrate: true
   h2:
     console:
       enabled: true
@@ -18,6 +21,10 @@ logging:
     root: info
     io.devzonecodez: trace
 
+###
+# Custom properties for Tenant configurations - This can be moved to Master
+#   Database and load it from there
+###
 tenants:
   datasources:
     tenantone:
