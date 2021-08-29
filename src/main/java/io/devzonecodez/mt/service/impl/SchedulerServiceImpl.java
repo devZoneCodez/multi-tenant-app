@@ -25,9 +25,6 @@ public class SchedulerServiceImpl implements SchedulerService {
 
     @Override
     public List<Scheduler> findAllActiveSchedulers() {
-        List<Scheduler> schedulers = new ArrayList<>();
-        Iterable<Scheduler> schedulerIterable = schedulerRepo.findAllActiveSchedulers();
-        schedulerIterable.forEach(schedulers::add);
-        return schedulers;
+        return schedulerRepo.findAllActiveSchedulers();
     }
 }
