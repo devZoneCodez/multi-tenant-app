@@ -19,6 +19,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <modelmapper.version>2.4.4</modelmapper.version>
         <swagger2.version>3.0.0</swagger2.version>
+        <jobrunr.version>3.2.1</jobrunr.version>
     </properties>
 
     <dependencies>
@@ -48,6 +49,14 @@
 			<version>${modelmapper.version}</version>
 		</dependency>
 		<!--   Model mapper for conversions End    -->
+
+        <!--   JobRunr dependency start     -->
+        <dependency>
+            <groupId>org.jobrunr</groupId>
+            <artifactId>jobrunr-spring-boot-starter</artifactId>
+            <version>${jobrunr.version}</version>
+        </dependency>
+        <!--   JobRunr dependency end     -->
 
 		<!-- Swagger dependencies Start -->
 		<dependency>

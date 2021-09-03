@@ -22,6 +22,17 @@ logging:
     io.devzonecodez: trace
 
 ###
+# JobRunr configurations
+###
+org:
+  jobrunr:
+    background-job-server:
+      enabled: true
+    dashboard:
+      enabled: true
+      port: 8081
+
+###
 # Custom properties for Tenant configurations - This can be moved to Master
 #   Database and load it from there
 ###

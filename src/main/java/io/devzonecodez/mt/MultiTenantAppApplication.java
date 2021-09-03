@@ -68,8 +68,8 @@ public class MultiTenantAppApplication implements ApplicationRunner {
 
 	private void loadSchedulers(String tenant) {
 		TenantContextHolder.setTenantId(tenant);
-		List<Scheduler> t1Schedulers = schedulerService.findAllActiveSchedulers();
-		log.info("schedulers ---->  " + tenant +" = " + t1Schedulers);
+		List<Scheduler> schedulers = schedulerService.findAllActiveSchedulers();
+		log.info("schedulers ---->  " + tenant +" = " + schedulers);
 		TenantContextHolder.clear();
 	}
 }
