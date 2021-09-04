@@ -26,8 +26,14 @@ public class Scheduler implements Serializable {
     @Column(name = "RECORD_ID")
     private Long recordId;
 
-    @Column(name = "SCHEDULER_ID")
+    @Column(name = "ID")
     private Integer schedulerId;
+
+    @Column(name = "NAME")
+    private String schedulerName;
+
+    @Column(name = "CLASS")
+    private String schedulerClass;
 
     @Column(name = "IS_ACTIVE")
     private Integer active;

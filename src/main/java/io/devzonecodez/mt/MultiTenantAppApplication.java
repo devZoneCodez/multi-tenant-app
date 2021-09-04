@@ -1,6 +1,7 @@
 package io.devzonecodez.mt;
 
 import io.devzonecodez.mt.config.web.TenantContextHolder;
+import io.devzonecodez.mt.job.JobService;
 import io.devzonecodez.mt.model.Scheduler;
 import io.devzonecodez.mt.model.User;
 import io.devzonecodez.mt.repo.UserRepo;
@@ -16,60 +17,84 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"io.devzonecodez.mt"})
 @EntityScan(basePackages = {"io.devzonecodez.mt.model"})
-@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
+@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 @Slf4j
 public class MultiTenantAppApplication implements ApplicationRunner {
 
-	@Autowired
-	private UserRepo userRepo;
+    @Autowired
+    private UserRepo userRepo;
 
-	@Autowired
+    @Autowired
     private SchedulerService schedulerService;
 
-	public static void main(String[] args) {
-		SpringApplication.run(MultiTenantAppApplication.class, args);
-	}
+    @Autowired
+    private JobService jobService;
 
-	@Override
-	public void run(ApplicationArguments args) throws Exception {
-		// create default user for both the tenants ob startup
-		createDefaultUsers(5, "tenantone");
-		createDefaultUsers(5, "tenanttwo");
+    public static void main(String[] args) {
+        SpringApplication.run(MultiTenantAppApplication.class, args);
+    }
 
-		// load schedulers
-		loadSchedulers("tenantone");
-		loadSchedulers("tenanttwo");
-	}
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        // create default user for both the tenants ob startup
+        createDefaultUsers(5, "tenantone");
+        createDefaultUsers(5, "tenanttwo");
 
-	private void createDefaultUsers(int numberOfUsers, String tenant) {
-		// set the tenant
-		TenantContextHolder.setTenantId(tenant);
+        // load schedulers
+        //loadSchedulers("tenantone");
+        //loadSchedulers("tenanttwo");
 
-		List<User> users = new ArrayList<>(5);
-		User user;
-		for (int i = 0; i < numberOfUsers; i++) {
-			user = new User();
-			user.setFirstName(tenant+"-user-first-name-"+i);
-			user.setLastName(tenant+"-user-last-name-"+i);
-			user.setMobile(new Long(i));
-			users.add(user);
-		}
-		userRepo.saveAll(users);
+        // Start Tenant Specific Schedulers
+        //startSchedulers("tenantone");
+        //startSchedulers("tenanttwo");
 
-		// clear the tenant
-		TenantContextHolder.clear();
-	}
+    }
 
-	private void loadSchedulers(String tenant) {
-		TenantContextHolder.setTenantId(tenant);
-		List<Scheduler> schedulers = schedulerService.findAllActiveSchedulers();
-		log.info("schedulers ---->  " + tenant +" = " + schedulers);
-		TenantContextHolder.clear();
-	}
+    private void createDefaultUsers(int numberOfUsers, String tenant) {
+        // set the tenant
+        TenantContextHolder.setTenantId(tenant);
+
+        List<User> users = new ArrayList<>(5);
+        User user;
+        for (int i = 0; i < numberOfUsers; i++) {
+            user = new User();
+            user.setFirstName(tenant + "-user-first-name-" + i);
+            user.setLastName(tenant + "-user-last-name-" + i);
+            user.setMobile(new Long(i));
+            users.add(user);
+        }
+        userRepo.saveAll(users);
+
+        // clear the tenant
+        TenantContextHolder.clear();
+    }
+
+    private void loadSchedulers(String tenant) {
+        TenantContextHolder.setTenantId(tenant);
+        List<Scheduler> schedulers = schedulerService.findAllActiveSchedulers();
+        log.info("schedulers ---->  " + tenant + " = " + schedulers);
+        TenantContextHolder.clear();
+    }
+
+    private void startSchedulers(String tenant) throws ClassNotFoundException,
+            NoSuchMethodException, IllegalAccessException,
+            InvocationTargetException, InstantiationException {
+        TenantContextHolder.setTenantId(tenant);
+        List<Scheduler> schedulers = schedulerService.findAllActiveSchedulers();
+        jobService.startAll(schedulers, tenant);
+    }
+
+    private void stopSchedulers(String tenant) {
+        TenantContextHolder.setTenantId(tenant);
+        List<Scheduler> schedulers = schedulerService.findAllActiveSchedulers();
+        jobService.stopAll(schedulers, tenant);
+    }
+
 }
