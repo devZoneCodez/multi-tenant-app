@@ -3,6 +3,7 @@ package io.devzonecodez.mt.job;
 import io.devzonecodez.mt.config.web.TenantContextHolder;
 import io.devzonecodez.mt.model.Scheduler;
 import lombok.extern.slf4j.Slf4j;
+import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
 import org.jobrunr.scheduling.cron.Cron;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,8 @@ public class JobServiceImpl implements JobService {
             jobScheduler.scheduleRecurrently(jobId, Cron.minutely(),
                     () -> {
                         TenantContextHolder.setTenantId(tenant);
-                        start(scheduler, TenantContextHolder.getTenantId());
+                        startJob(scheduler, TenantContextHolder.getTenantId(),
+                                scheduler.getSchedulerName());
                     });
         });
     }
@@ -41,14 +43,12 @@ public class JobServiceImpl implements JobService {
                 + tenant + "_" + scheduler.getSchedulerName();
         TenantContextHolder.setTenantId(tenant);
         jobScheduler.scheduleRecurrently(jobId, Cron.minutely(),
-                () -> startJob(scheduler, tenant));
+                () -> startJob(scheduler, tenant, scheduler.getSchedulerName()));
     }
 
     @Override
     public void stopAll(List<Scheduler> schedulers, String tenant) {
         schedulers.stream().forEach(scheduler -> {
-            String jobId = scheduler.getSchedulerId() + "_"
-                    + tenant + "_" + scheduler.getSchedulerName();
             TenantContextHolder.setTenantId(tenant);
             stop(scheduler, tenant);
         });
@@ -62,9 +62,10 @@ public class JobServiceImpl implements JobService {
         jobScheduler.delete(jobId);
     }
 
-    public void startJob(Scheduler scheduler, String tenant) throws ClassNotFoundException {
+    @Job(name = "%1 - %2")
+    public void startJob(Scheduler scheduler, String tenant, String jobName) throws ClassNotFoundException {
         log.info("TenantContextHolder.getTenantId() = " + tenant);
-        log.info("startJob - " + scheduler.getSchedulerClass());
+        log.info("startJob - " + jobName);
         Class aClass = Class.forName(scheduler.getSchedulerClass());
         AppJob appJob = (AppJob) applicationContext.getBean(aClass);
         appJob.execute(tenant);
