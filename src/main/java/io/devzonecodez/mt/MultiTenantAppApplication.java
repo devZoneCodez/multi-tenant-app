@@ -42,19 +42,19 @@ public class MultiTenantAppApplication implements ApplicationRunner {
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         // create default user for both the tenants ob startup
         createDefaultUsers(5, "tenantone");
         createDefaultUsers(5, "tenanttwo");
 
-        // load schedulers
-        //loadSchedulers("tenantone");
-        //loadSchedulers("tenanttwo");
-
-        // Start Tenant Specific Schedulers
-        //startSchedulers("tenantone");
-        //startSchedulers("tenanttwo");
-
+        /*
+        //load schedulers
+        loadSchedulers("tenantone");
+        loadSchedulers("tenanttwo");
+        //Start Tenant Specific Schedulers
+        startSchedulers("tenantone");
+        startSchedulers("tenanttwo");
+        */
     }
 
     private void createDefaultUsers(int numberOfUsers, String tenant) {
@@ -67,7 +67,7 @@ public class MultiTenantAppApplication implements ApplicationRunner {
             user = new User();
             user.setFirstName(tenant + "-user-first-name-" + i);
             user.setLastName(tenant + "-user-last-name-" + i);
-            user.setMobile(new Long(i));
+            user.setMobile((long) i);
             users.add(user);
         }
         userRepo.saveAll(users);

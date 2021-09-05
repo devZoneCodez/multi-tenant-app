@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @RestController
@@ -28,22 +27,9 @@ public class JobController {
     public String startAll() {
         String message = "Oops! Something went wrong!!!";
         List<Scheduler> schedulers = schedulerService.findAllActiveSchedulers();
-        try {
-            jobService.startAll(schedulers, TenantContextHolder.getTenantId());
-        } catch (ClassNotFoundException | IllegalAccessException e) {
-            e.printStackTrace();
-            return message;
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-            return message;
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-            return message;
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-            return message;
-        }
-        return "Schedulers are started!!!";
+        jobService.startAll(schedulers, TenantContextHolder.getTenantId());
+        message = "Schedulers are started!!!";
+        return message;
     }
 
     @GetMapping(path = "/stopAll")
@@ -51,6 +37,6 @@ public class JobController {
         String message = "Oops! Something went wrong!!!";
         List<Scheduler> schedulers = schedulerService.findAllActiveSchedulers();
         jobService.stopAll(schedulers, TenantContextHolder.getTenantId());
-        return "Schedulers are started!!!";
+        return "Schedulers are Stopped!!!";
     }
 }

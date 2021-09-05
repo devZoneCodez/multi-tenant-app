@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @Slf4j
@@ -24,7 +23,7 @@ public class JobServiceImpl implements JobService {
 
 
     @Override
-    public void startAll(List<Scheduler> schedulers, String tenant) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public void startAll(List<Scheduler> schedulers, String tenant) {
         schedulers.stream().forEach(scheduler -> {
             String jobId = scheduler.getSchedulerId() + "_"
                     + tenant + "_" + scheduler.getSchedulerName();
@@ -37,7 +36,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public void start(Scheduler scheduler, String tenant) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public void start(Scheduler scheduler, String tenant) {
         String jobId = scheduler.getSchedulerId() + "_"
                 + tenant + "_" + scheduler.getSchedulerName();
         TenantContextHolder.setTenantId(tenant);
@@ -63,9 +62,7 @@ public class JobServiceImpl implements JobService {
         jobScheduler.delete(jobId);
     }
 
-    public void startJob(Scheduler scheduler, String tenant) throws InvocationTargetException,
-            IllegalAccessException, ClassNotFoundException,
-            NoSuchMethodException, InstantiationException {
+    public void startJob(Scheduler scheduler, String tenant) throws ClassNotFoundException {
         log.info("TenantContextHolder.getTenantId() = " + tenant);
         log.info("startJob - " + scheduler.getSchedulerClass());
         Class aClass = Class.forName(scheduler.getSchedulerClass());
