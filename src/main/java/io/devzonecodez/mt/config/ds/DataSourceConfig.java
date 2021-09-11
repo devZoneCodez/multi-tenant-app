@@ -36,7 +36,7 @@ public class DataSourceConfig {
                 .getDataSources()
                 .values()
                 .stream()
-                .map(dataSource -> (DataSource) dataSource)
+                .map(DataSource.class::cast)
                 .forEach(this::migrate);
     }
 

@@ -11,9 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@NamedQueries({
-        @NamedQuery(name = "User.findAll", query = "SELECT user FROM User user")
-})
+@NamedQuery(name = "User.findAll", query = "SELECT user FROM User user")
 public class User implements Serializable {
 
     @Id

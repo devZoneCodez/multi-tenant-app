@@ -66,8 +66,8 @@ public class JobServiceImpl implements JobService {
     public void startJob(Scheduler scheduler, String tenant, String jobName) throws ClassNotFoundException {
         log.info("TenantContextHolder.getTenantId() = " + tenant);
         log.info("startJob - " + jobName);
-        Class aClass = Class.forName(scheduler.getSchedulerClass());
-        AppJob appJob = (AppJob) applicationContext.getBean(aClass);
+        Class<AppJob> aClass = (Class<AppJob>) Class.forName(scheduler.getSchedulerClass());
+        AppJob appJob = applicationContext.getBean(aClass);
         appJob.execute(tenant);
     }
 

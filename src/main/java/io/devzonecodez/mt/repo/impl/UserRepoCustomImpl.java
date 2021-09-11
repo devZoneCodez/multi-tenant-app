@@ -18,7 +18,6 @@ public class UserRepoCustomImpl implements UserRepoCustom {
     @Override
     public List<User> findAll() {
         Query sql = entityManager.createNamedQuery("User.findAll");
-        List<User> users = sql.getResultList();
-        return users;
+        return sql.getResultList();
     }
 }

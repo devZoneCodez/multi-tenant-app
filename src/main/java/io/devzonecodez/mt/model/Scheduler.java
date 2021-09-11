@@ -12,13 +12,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@NamedQueries({
-        @NamedQuery(name = "Scheduler.findAll",
-                query = "SELECT scheduler FROM Scheduler scheduler"),
-        @NamedQuery(name = "Scheduler.findAllActiveSchedulers",
-                query = "SELECT scheduler FROM Scheduler scheduler WHERE scheduler.active = 1")
+@NamedQuery(name = "Scheduler.findAll",
+        query = "SELECT scheduler FROM Scheduler scheduler")
+@NamedQuery(name = "Scheduler.findAllActiveSchedulers",
+        query = "SELECT scheduler FROM Scheduler scheduler WHERE scheduler.active = 1")
 
-})
 public class Scheduler implements Serializable {
 
     @Id

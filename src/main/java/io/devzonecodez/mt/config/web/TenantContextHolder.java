@@ -2,6 +2,10 @@ package io.devzonecodez.mt.config.web;
 
 public class TenantContextHolder {
 
+    private TenantContextHolder() {
+
+    }
+
     private static ThreadLocal<String> currentTenant = new ThreadLocal<>();
 
     public static void setTenantId(String tenantId) {

@@ -25,18 +25,15 @@ public class JobController {
 
     @GetMapping(path = "/startAll")
     public String startAll() {
-        String message = "Oops! Something went wrong!!!";
         List<Scheduler> schedulers = schedulerService.findAllActiveSchedulers();
         jobService.startAll(schedulers, TenantContextHolder.getTenantId());
-        message = "Schedulers are started!!!";
-        return message;
+        return "Schedulers are started!!!";
     }
 
     @GetMapping(path = "/stopAll")
     public String stopAll() {
-        String message = "Oops! Something went wrong!!!";
         List<Scheduler> schedulers = schedulerService.findAllActiveSchedulers();
         jobService.stopAll(schedulers, TenantContextHolder.getTenantId());
-        return "Schedulers are Stopped!!!";
+        return  "Schedulers are Stopped!!!";
     }
 }

@@ -1,6 +1,5 @@
 package io.devzonecodez.mt.service;
 
-import io.devzonecodez.mt.dto.UserDto;
 import io.devzonecodez.mt.model.Scheduler;
 
 import java.util.List;

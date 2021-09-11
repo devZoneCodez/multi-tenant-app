@@ -2,7 +2,6 @@ package io.devzonecodez.mt;
 
 import io.devzonecodez.mt.config.web.TenantContextHolder;
 import io.devzonecodez.mt.job.JobService;
-import io.devzonecodez.mt.model.Scheduler;
 import io.devzonecodez.mt.model.User;
 import io.devzonecodez.mt.repo.UserRepo;
 import io.devzonecodez.mt.service.SchedulerService;
@@ -17,7 +16,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,16 +43,7 @@ public class MultiTenantAppApplication implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         // create default user for both the tenants ob startup
         createDefaultUsers(5, "tenantone");
-        createDefaultUsers(5, "tenanttwo");
-
-        /*
-        //load schedulers
-        loadSchedulers("tenantone");
-        loadSchedulers("tenanttwo");
-        //Start Tenant Specific Schedulers
-        startSchedulers("tenantone");
-        startSchedulers("tenanttwo");
-        */
+        createDefaultUsers(7, "tenanttwo");
     }
 
     private void createDefaultUsers(int numberOfUsers, String tenant) {
@@ -75,26 +64,4 @@ public class MultiTenantAppApplication implements ApplicationRunner {
         // clear the tenant
         TenantContextHolder.clear();
     }
-
-    private void loadSchedulers(String tenant) {
-        TenantContextHolder.setTenantId(tenant);
-        List<Scheduler> schedulers = schedulerService.findAllActiveSchedulers();
-        log.info("schedulers ---->  " + tenant + " = " + schedulers);
-        TenantContextHolder.clear();
-    }
-
-    private void startSchedulers(String tenant) throws ClassNotFoundException,
-            NoSuchMethodException, IllegalAccessException,
-            InvocationTargetException, InstantiationException {
-        TenantContextHolder.setTenantId(tenant);
-        List<Scheduler> schedulers = schedulerService.findAllActiveSchedulers();
-        jobService.startAll(schedulers, tenant);
-    }
-
-    private void stopSchedulers(String tenant) {
-        TenantContextHolder.setTenantId(tenant);
-        List<Scheduler> schedulers = schedulerService.findAllActiveSchedulers();
-        jobService.stopAll(schedulers, tenant);
-    }
-
 }

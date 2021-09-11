@@ -28,9 +28,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findAll() {
         List<UserDto> users = new ArrayList<>();
         Iterable<User> userIterable = userRepo.findAll();
-        userIterable.forEach(user -> {
-            users.add(converter.convertToDto(user));
-        });
+        userIterable.forEach(user -> users.add(converter.convertToDto(user)));
         return users;
     }
 
@@ -38,9 +36,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findAllFromCustom() {
         List<UserDto> users = new ArrayList<>();
         Iterable<User> userIterable = userRepoCustom.findAll();
-        userIterable.forEach(user -> {
-            users.add(converter.convertToDto(user));
-        });
+        userIterable.forEach(user -> users.add(converter.convertToDto(user)));
         return users;
     }
 }

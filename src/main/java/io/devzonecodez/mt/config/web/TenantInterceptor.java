@@ -22,6 +22,6 @@ public class TenantInterceptor implements WebRequestInterceptor {
 
     @Override
     public void afterCompletion(WebRequest request, Exception ex) throws Exception {
-
+        // This is a lifecycle method. The logic can be place later if required
     }
 }
