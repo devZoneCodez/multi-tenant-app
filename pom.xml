@@ -50,6 +50,34 @@
 		</dependency>
 		<!--   Model mapper for conversions End    -->
 
+        <!--  JavaMelody dependency start    -->
+        <dependency>
+            <groupId>net.bull.javamelody</groupId>
+            <artifactId>javamelody-spring-boot-starter</artifactId>
+            <version>1.88.0</version>
+        </dependency>
+        <!--  Optional for PDF Export-->
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>2.1.7</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>bcmail-jdk14</artifactId>
+                    <groupId>bouncycastle</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>bcprov-jdk14</artifactId>
+                    <groupId>bouncycastle</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>bctsp-jdk14</artifactId>
+                    <groupId>bouncycastle</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--  JavaMelody dependency end      -->
+
         <!--   JobRunr dependency start     -->
         <dependency>
             <groupId>org.jobrunr</groupId>

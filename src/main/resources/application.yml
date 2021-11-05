@@ -33,6 +33,16 @@ org:
       port: 8081
 
 ###
+# JavaMelody Monitoring configurations
+###
+javamelody:
+  enabled: true
+  spring-monitoring-enabled: true
+  init-parameters:
+    # log http requests:
+    log: true
+
+###
 # Custom properties for Tenant configurations - This can be moved to Master
 #   Database and load it from there
 ###
